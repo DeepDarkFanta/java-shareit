@@ -11,6 +11,7 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserService userService;
+
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         return userService.addUser(user);

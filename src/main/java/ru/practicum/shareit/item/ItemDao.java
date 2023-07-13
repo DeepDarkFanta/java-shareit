@@ -17,10 +17,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemDao {
     private final HashMap<Long, Item> itemHashMap = new HashMap<>();
+
     private Long id = 0L;
 
     @Autowired
     private final UserDao userDao;
+
     public ItemDto addItem(Long userId, ItemDto itemDto) {
         Item item = new Item();
         item.setName(itemDto.getName())
@@ -62,7 +64,7 @@ public class ItemDao {
                 .filter(x -> x.getDescription().toLowerCase().contains(text.toLowerCase()) ||
                         x.getName().toLowerCase().contains(text.toLowerCase()))
                 .filter(Item::getAvailable)
-                .map(Item::toItemDto).
-                collect(Collectors.toList());
+                .map(Item::toItemDto)
+                .collect(Collectors.toList());
     }
 }
