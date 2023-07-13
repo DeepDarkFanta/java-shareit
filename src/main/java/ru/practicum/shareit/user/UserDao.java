@@ -11,6 +11,7 @@ public class UserDao {
     private final HashMap<Long, User> userHashMap = new HashMap<>();
 
     private Long userId = 0L;
+
     public User addUser(User user) {
         if (userHashMap.entrySet().stream()
                 .anyMatch(x -> Objects.equals(x.getValue().getEmail(), user.getEmail()))
@@ -21,7 +22,6 @@ public class UserDao {
     }
 
     public User getUser(Long userId) {
-
         if (userHashMap.containsKey(userId)) {
             return userHashMap.get(userId);
         } else {
