@@ -33,19 +33,21 @@ public class UserDao {
         if (!userHashMap.containsKey(userId)) throw new NotFoundException();
         User updateUser = userHashMap.get(userId);
 
-        if (user.getName() == null) {
-            if (userHashMap.entrySet().stream()
-                    .anyMatch(x -> Objects.equals(x.getValue().getEmail(), user.getEmail())) &&
-                    !Objects.equals(updateUser.getEmail(), user.getEmail())
-            ) throw new DuplicateException();
-            updateUser.setEmail(user.getEmail());
-        }
-        if (user.getEmail() == null) updateUser.setName(user.getName());
+        boolean isDuplicate = userHashMap.entrySet().stream()
+                .anyMatch(x -> Objects.equals(x.getValue().getEmail(), user.getEmail()));
 
-        if (user.getEmail() != null && user.getName() != null) {
+        if (isDuplicate &&
+                !Objects.equals(updateUser.getEmail(), user.getEmail())) throw new DuplicateException();
+
+        if (user.getName() == null) {
+            updateUser.setEmail(user.getEmail());
+        } else if (user.getEmail() == null) {
+            updateUser.setName(user.getName());
+        } else {
             updateUser.setName(user.getName());
             updateUser.setEmail(user.getEmail());
         }
+
         return updateUser;
     }
 
@@ -58,6 +60,6 @@ public class UserDao {
     }
 
     public List<User> getUsers() {
-        return new ArrayList<>(new ArrayList<>(userHashMap.values()));
+        return new ArrayList<>(userHashMap.values());
     }
 }
