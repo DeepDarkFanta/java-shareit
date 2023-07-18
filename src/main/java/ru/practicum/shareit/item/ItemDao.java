@@ -23,7 +23,7 @@ public class ItemDao {
     @Autowired
     private final UserDao userDao;
 
-    public ItemDto addItem(Long userId, ItemDto itemDto) {
+    public Item addItem(Long userId, ItemDto itemDto) {
         Item item = new Item();
         item.setName(itemDto.getName())
                 .setAvailable(itemDto.getAvailable())
@@ -32,39 +32,36 @@ public class ItemDao {
                 .setId(++id);
 
         itemHashMap.put(item.getId(), item);
-        return itemDto.setId(item.getId());
+        return item;
     }
 
-    public ItemDto updateItem(Long id, ItemDto itemDto, Long itemId) {
-        Item item = itemHashMap.get(itemId);
-        if (!Objects.equals(item.getOwner().getId(), id)) throw new NotFoundException();
+    public Item updateItem(ItemDto itemDto, Item item, Long itemId) {
 
         if (itemDto.getAvailable() != null) item.setAvailable(itemDto.getAvailable());
         if (itemDto.getName() != null) item.setName(itemDto.getName());
         if (itemDto.getDescription() != null) item.setDescription(itemDto.getDescription());
+
         itemHashMap.put(itemId, item);
-        return Item.toItemDto(item);
+        return item;
     }
 
-    public ItemDto getItem(Long itemId) {
+    public Item getItem(Long itemId) {
         Item item = itemHashMap.get(itemId);
         if (item == null) throw new NotFoundException();
-        return Item.toItemDto(item);
+        return item;
     }
 
-    public List<ItemDto> getItems(Long id) {
+    public List<Item> getItems(Long id) {
         return itemHashMap.values().stream()
                 .filter(x -> Objects.equals(x.getOwner().getId(), id))
-                .map(Item::toItemDto)
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDto> searchItems(String text) {
+    public List<Item> searchItems(String text) {
         return itemHashMap.values().stream()
                 .filter(x -> x.getDescription().toLowerCase().contains(text.toLowerCase()) ||
                         x.getName().toLowerCase().contains(text.toLowerCase()))
                 .filter(Item::getAvailable)
-                .map(Item::toItemDto)
                 .collect(Collectors.toList());
     }
 }
