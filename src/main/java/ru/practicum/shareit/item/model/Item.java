@@ -1,24 +1,32 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.user.User;
 
-@Data
+
+import javax.persistence.*;
+
 @Accessors(chain = true)
+@Entity
+@Table(name = "ITEMS")
+@Setter
+@Getter
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private Boolean available;
-    private User owner;
 
-    public static ItemDto toItemDto(Item item) {
-        return new ItemDto()
-                .setAvailable(item.getAvailable())
-                .setId(item.getId())
-                .setName(item.getName())
-                .setDescription(item.getDescription());
-    }
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "available")
+    private Boolean available;
+
+    @Column(name = "owner")
+    private Long owner;
 }

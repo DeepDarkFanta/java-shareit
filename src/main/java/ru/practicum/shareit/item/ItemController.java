@@ -40,6 +40,6 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> searchItems(@RequestParam String text) {
-        return itemService.searchItems(text);
+        return itemService.searchItems(text.toUpperCase());
     }
 }

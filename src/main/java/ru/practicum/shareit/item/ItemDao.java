@@ -23,7 +23,7 @@ public class ItemDao {
     @Autowired
     private final UserDao userDao;
 
-    public Item addItem(Long userId, ItemDto itemDto) {
+   /* public Item addItem(Long userId, ItemDto itemDto) {
         Item item = new Item();
         item.setName(itemDto.getName())
                 .setAvailable(itemDto.getAvailable())
@@ -33,7 +33,7 @@ public class ItemDao {
 
         itemHashMap.put(item.getId(), item);
         return item;
-    }
+    }*/
 
     public Item updateItem(ItemDto itemDto, Item item, Long itemId) {
 
@@ -53,7 +53,7 @@ public class ItemDao {
 
     public List<Item> getItems(Long id) {
         return itemHashMap.values().stream()
-                .filter(x -> Objects.equals(x.getOwner().getId(), id))
+                .filter(x -> Objects.equals(x.getOwner(), id))
                 .collect(Collectors.toList());
     }
 
